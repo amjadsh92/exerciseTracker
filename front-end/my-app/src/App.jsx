@@ -15,6 +15,17 @@ function App() {
       </div>
       <div id="forms" className="forms">
 
+        <div id="addUserForm" className="addUserForm" >
+
+        </div>
+
+        <div id="addExerciseForm" className="addExerciseForm" >
+          
+        </div>
+        <div id="showUserForm" className="showUserForm" >
+          
+        </div>
+
       </div>
 
 
