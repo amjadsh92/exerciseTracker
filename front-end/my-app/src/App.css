@@ -1,8 +1,8 @@
-*{
+/* *{
   margin:0;
   padding:0;
   box-sizing: border-box;
-}
+} */
 
 .app{
 
@@ -51,16 +51,16 @@
 .user-name{
   
   display:block;
-  width:80%;
+  margin-right:auto;
+  margin-left:auto;
+  /* width:80%;
   height:35px;
-  margin:auto;
   margin-top:5px;
   border-radius:7px;
   padding:5px;
-  outline: none;
-  border:0;
-  font-size:15px;
-
+ 
+  font-size:15px; */
+ 
 
 }
 

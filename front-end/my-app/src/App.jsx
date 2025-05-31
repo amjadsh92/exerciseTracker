@@ -3,6 +3,13 @@
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import { useState } from 'react'
 import { Card } from 'primereact/card';
+import { FloatLabel } from 'primereact/floatlabel';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import 'primereact/resources/themes/saga-blue/theme.css'; // or another theme like 'lara-light-blue'
+import 'primereact/resources/primereact.min.css';          // PrimeReact core
+import 'primeicons/primeicons.css'; 
+import 'primeflex/primeflex.css';   
 
 import './App.css'
 
@@ -11,44 +18,21 @@ function App() {
 
   return (
     <>
-    <div id="app" className="app">
-      <div id="title" className="title">
-        Exercise Tracker
-      </div>
-
-      <div id="forms" className="forms">
-
-      
-
-        <div id="addUserForm" className="addUserForm">
-        <p className="user-title"> Create a new user</p>
-        <form id="user">
-        <label htmlFor="user-name" className="user-name-label">Username:</label>
-        <input id="user-name" type="text" className="user-name" />
-        <button type="submit" className="userSubmit">Submit</button>
-        </form>
-
-        </div>
-
-        
     
-
+    <div className="flex justify-content-center align-items-center min-h-screen bg-gray-100">
+      <Card title="Add User" className="w-17rem h-20rem">
+        <form className="p-fluid">
+          <div className="field mb-4">
+            <FloatLabel>
+              <InputText id="username" />
+              <label htmlFor="username">Username</label>
+            </FloatLabel>
+          </div>
+          <Button label="Submit" type="submit" className="w-full" />
+        </form>
+      </Card>
       
-
-        
-
-        <div id="addExerciseForm" className="addExerciseForm" >
-          
-        </div>
-        <div id="showUserForm" className="showUserForm" >
-
-        </div>
-
-      </div>
-
-
     </div>
-
       
     </>
   )
