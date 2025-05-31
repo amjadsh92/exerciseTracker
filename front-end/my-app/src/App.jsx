@@ -20,10 +20,57 @@ function App() {
     <>
     
     <div className="flex justify-content-center align-items-center min-h-screen bg-gray-100">
-      <Card title="Add User" className="w-17rem h-20rem">
+      <Card title="Add User" className="w-17rem h-20rem m-2">
         <form className="p-fluid">
           <div className="field mb-4">
             <FloatLabel>
+              <InputText id="username" />
+              <label htmlFor="username">Username</label>
+            </FloatLabel>
+          </div>
+          <Button label="Submit" type="submit" className="w-full" />
+        </form>
+      </Card>
+      <Card title="Add exercises" className="w-17rem h-27rem m-4">
+        <form className="p-fluid">
+          <div className="field mb-4">
+            <FloatLabel className="mb-5">
+              <InputText id="username" />
+              <label htmlFor="username">_id</label>
+            </FloatLabel >
+            <FloatLabel className="mb-5">
+              <InputText id="description" />
+              <label htmlFor="description">description*</label>
+            </FloatLabel>
+            <FloatLabel className="mb-5">
+              <InputText id="duration" />
+              <label htmlFor="duration">duration*(min.)</label>
+            </FloatLabel>
+            <FloatLabel className="mb-5">
+              <InputText id="data" />
+              <label htmlFor="date">date(yyyy-mm-dd)</label>
+            </FloatLabel>
+          </div>
+          <Button label="Submit" type="submit" className="w-full" />
+        </form>
+      </Card>
+
+      <Card title="Add User" className="w-17rem h-20rem m-4">
+        <form className="p-fluid">
+          <div className="field mb-4">
+            <FloatLabel className="mb-4">
+              <InputText id="username" />
+              <label htmlFor="username">Username</label>
+            </FloatLabel>
+          </div>
+          <Button label="Submit" type="submit" className="w-full" />
+        </form>
+      </Card>
+
+      <Card title="Add User" className="w-17rem h-20rem m-4">
+        <form className="p-fluid">
+          <div className="field mb-4">
+            <FloatLabel className="mb-4">
               <InputText id="username" />
               <label htmlFor="username">Username</label>
             </FloatLabel>
