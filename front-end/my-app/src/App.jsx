@@ -21,70 +21,88 @@ function App() {
     
     <div className="min-h-screen bg-gray-100 w-full">
       <div id="title" className="title mt-100px text-center text-5xl">Exercise Tracker</div>
-      <div className="flex flex-wrap justify-content-center mt-90px w-11 mx-auto">
-      <Card title="Add User" className="w-17rem h-27rem m-4">
-        <form className="p-fluid">
-          <div className="field mb-4">
-            <FloatLabel className="mb-4">
-              <InputText id="username" />
-              <label htmlFor="username">Username</label>
-            </FloatLabel>
-          </div>
-          <Button label="Add" type="submit" className="w-full" />
-        </form>
-      </Card>
-      <Card title="Add Exercises" className="w-17rem h-27rem m-4">
-        <form className="p-fluid">
-          <div className="field mb-4">
-            <FloatLabel className="mb-5">
-              <InputText id="username" />
-              <label htmlFor="username">_id</label>
-            </FloatLabel >
-            <FloatLabel className="mb-5">
-              <InputText id="description" />
-              <label htmlFor="description">description*</label>
-            </FloatLabel>
-            <FloatLabel className="mb-5">
-              <InputText id="duration" />
-              <label htmlFor="duration">duration*(min.)</label>
-            </FloatLabel>
-            <FloatLabel className="mb-5">
-              <InputText id="data" />
-              <label htmlFor="date">date(yyyy-mm-dd)</label>
-            </FloatLabel>
-          </div>
-          <Button label="Add" type="submit" className="w-full" />
-        </form>
-      </Card>
-
-      <Card title="Show User Details" className="w-17rem h-27rem m-4">
-        <form className="p-fluid">
-          <div className="field mb-4">
-            <FloatLabel className="mb-4">
-              <InputText id="username" />
-              <label htmlFor="username">Username</label>
-            </FloatLabel>
-          </div>
-          <Button label="Show" type="submit" className="w-full" />
-        </form>
-      </Card>
-
-      <Card title="Delete User" className="w-17rem h-27rem m-4">
-        <form className="p-fluid">
-          <div className="field mb-4">
-            <FloatLabel className="mb-4">
-              <InputText id="username" />
-              <label htmlFor="username">Username</label>
-            </FloatLabel>
-          </div>
-          <Button label="Delete" type="submit" className="w-full" />
-        </form>
-      </Card>
-    </div>
+      < Forms />
     </div>
       
     </>
   )
 }
+
+
+
+function Forms(){
+
+
+  return (
+
+
+  <div className="flex flex-wrap justify-content-center mt-90px w-11 mx-auto">
+    <Card title="Add User" className="w-17rem h-27rem m-4">
+      <form className="p-fluid">
+        <div className="field mb-4">
+          <FloatLabel className="mb-4">
+            <InputText id="username" />
+            <label htmlFor="username">Username</label>
+          </FloatLabel>
+        </div>
+        <Button label="Add" type="submit" className="w-full" />
+      </form>
+    </Card>
+    <Card title="Add Exercises" className="w-17rem h-27rem m-4">
+      <form className="p-fluid">
+        <div className="field mb-4">
+          <FloatLabel className="mb-5">
+            <InputText id="username" />
+            <label htmlFor="username">_id</label>
+          </FloatLabel >
+          <FloatLabel className="mb-5">
+            <InputText id="description" />
+            <label htmlFor="description">description*</label>
+          </FloatLabel>
+          <FloatLabel className="mb-5">
+            <InputText id="duration" />
+            <label htmlFor="duration">duration*(min.)</label>
+          </FloatLabel>
+          <FloatLabel className="mb-5">
+            <InputText id="data" />
+            <label htmlFor="date">date(yyyy-mm-dd)</label>
+          </FloatLabel>
+        </div>
+        <Button label="Add" type="submit" className="w-full" />
+      </form>
+    </Card>
+
+    <Card title="Show User Details" className="w-17rem h-27rem m-4">
+      <form className="p-fluid">
+        <div className="field mb-4">
+          <FloatLabel className="mb-4">
+            <InputText id="username" />
+            <label htmlFor="username">Username</label>
+          </FloatLabel>
+        </div>
+        <Button label="Show" type="submit" className="w-full" />
+      </form>
+    </Card>
+
+    <Card title="Delete User" className="w-17rem h-27rem m-4">
+      <form className="p-fluid">
+        <div className="field mb-4">
+          <FloatLabel className="mb-4">
+            <InputText id="username" />
+            <label htmlFor="username">Username</label>
+          </FloatLabel>
+        </div>
+        <Button label="Delete" type="submit" className="w-full" />
+      </form>
+    </Card>
+  </div>
+
+
+  )
+}
+
+
+  
+
 
 export default App
