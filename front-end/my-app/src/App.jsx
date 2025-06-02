@@ -2,6 +2,7 @@
 
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import { useState } from 'react'
+import { Dialog } from 'primereact/dialog';
 import { Card } from 'primereact/card';
 import { FloatLabel } from 'primereact/floatlabel';
 import { InputText } from 'primereact/inputtext';
@@ -55,7 +56,8 @@ function AddUser(){
 
 
   const [username, setUsername] = useState("");
-
+  const [dialog, setDialog] = useState({visible:false, message:""});
+  
   const handleChange = (e) => {
     setUsername(
      e.target.value,
@@ -76,9 +78,13 @@ function AddUser(){
       });
 
       const result = await response.json();
-      console.log("Success:", result);
+    
+      setDialog({visible:true, message:`We have successfully added ${result.username} with id "${result._id}" to our list!`});
+      
     } catch (error) {
-      console.error("Error:", error);
+      
+      setDialog({visible:true, message:`Failed to add user. Please Try again.`});
+      
     }
 
   }
@@ -97,6 +103,20 @@ function AddUser(){
         </div>
         <Button onClick={handleSubmit} label="Add" type="submit" className="w-full"  />
       </form>
+
+      <Dialog
+        header="Submission"
+        visible={dialog.visible}
+        style={{ width: "350px" }}
+        onHide={() => setDialog({...dialog,visible:false})}
+        footer={
+          <div>
+            <Button label="OK" icon="pi pi-check" onClick={() => setDialog({...dialog,visible:false}) } autoFocus />
+          </div>
+        }
+      >
+        <p className="m-0">{dialog.message}</p>
+      </Dialog>
     </Card>
   )
 
