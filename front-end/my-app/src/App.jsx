@@ -37,6 +37,24 @@ function Forms(){
 
 
   <div className="flex flex-wrap justify-content-center mt-90px w-11 mx-auto">
+
+    <AddUser />
+    <AddExercises />
+    <ShowDetails />
+    <DeleteUser />
+    
+    
+  </div>
+
+
+  )
+}
+
+
+function AddUser(){
+
+  return(
+
     <Card title="Add User" className="w-17rem h-27rem m-4">
       <form className="p-fluid">
         <div className="field mb-4">
@@ -48,6 +66,16 @@ function Forms(){
         <Button label="Add" type="submit" className="w-full" />
       </form>
     </Card>
+  )
+
+}  
+
+
+function AddExercises(){
+
+  return(
+
+
     <Card title="Add Exercises" className="w-17rem h-27rem m-4">
       <form className="p-fluid">
         <div className="field mb-4">
@@ -71,7 +99,13 @@ function Forms(){
         <Button label="Add" type="submit" className="w-full" />
       </form>
     </Card>
+  )
+}
 
+function ShowDetails(){
+
+
+  return(
     <Card title="Show User Details" className="w-17rem h-27rem m-4">
       <form className="p-fluid">
         <div className="field mb-4">
@@ -83,6 +117,14 @@ function Forms(){
         <Button label="Show" type="submit" className="w-full" />
       </form>
     </Card>
+  )
+}
+
+
+function DeleteUser(){
+
+
+  return(
 
     <Card title="Delete User" className="w-17rem h-27rem m-4">
       <form className="p-fluid">
@@ -95,14 +137,8 @@ function Forms(){
         <Button label="Delete" type="submit" className="w-full" />
       </form>
     </Card>
-  </div>
-
-
   )
 }
-
-
-  
 
 
 export default App
