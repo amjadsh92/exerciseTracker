@@ -45,14 +45,14 @@ const handleAPIs =() =>{
 
 
   app.post("/api/users/", async function(req,res){
-    console.log(req.body)
+
     const username = req.body.username
     const id = uuidv4() 
     const insertQuery = `INSERT INTO users(id,username) VALUES($1,$2)`
     
     const result  = await pool.query(insertQuery,[`${id}`,`${username}`] )
 
-    res.json({result: result})
+    res.json({_id: id, username: username})
 
   })
 }
