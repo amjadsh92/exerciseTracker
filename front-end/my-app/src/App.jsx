@@ -10,7 +10,7 @@ import 'primereact/resources/themes/saga-blue/theme.css'; // or another theme li
 import 'primereact/resources/primereact.min.css';          // PrimeReact core
 import 'primeicons/primeicons.css'; 
 import 'primeflex/primeflex.css';   
-
+import './styles/spaces.css'
 import './App.css'
 
 function App() {
@@ -19,8 +19,10 @@ function App() {
   return (
     <>
     
-    <div className="flex justify-content-center align-items-center min-h-screen bg-gray-100">
-      <Card title="Add User" className="w-17rem h-27rem m-2">
+    <div className="min-h-screen bg-gray-100 w-full">
+      <div id="title" className="title mt-100px text-center text-5xl">Exercise Tracker</div>
+      <div className="flex flex-wrap justify-content-center mt-90px w-11 mx-auto">
+      <Card title="Add User" className="w-17rem h-27rem m-4">
         <form className="p-fluid">
           <div className="field mb-4">
             <FloatLabel className="mb-4">
@@ -78,7 +80,7 @@ function App() {
           <Button label="Delete" type="submit" className="w-full" />
         </form>
       </Card>
-      
+    </div>
     </div>
       
     </>
