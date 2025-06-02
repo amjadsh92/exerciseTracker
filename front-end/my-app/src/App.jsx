@@ -53,20 +53,53 @@ function Forms(){
 
 function AddUser(){
 
+
+  const [username, setUsername] = useState("");
+
+  const handleChange = (e) => {
+    setUsername(
+     e.target.value,
+    );
+  };
+
+
+  const  handleSubmit = async (e) => {
+    e.preventDefault(); 
+
+     try {
+      const response = await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({username}),
+      });
+
+      const result = await response.json();
+      console.log("Success:", result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+  }
+
+  
+  
   return(
 
     <Card title="Add User" className="w-17rem h-27rem m-4">
-      <form className="p-fluid">
+      <form  className="p-fluid">
         <div className="field mb-4">
           <FloatLabel className="mb-4">
-            <InputText id="username" />
+            <InputText id="username" onChange={handleChange} />
             <label htmlFor="username">Username</label>
           </FloatLabel>
         </div>
-        <Button label="Add" type="submit" className="w-full" />
+        <Button onClick={handleSubmit} label="Add" type="submit" className="w-full"  />
       </form>
     </Card>
   )
+
 
 }  
 
