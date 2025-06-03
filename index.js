@@ -46,7 +46,8 @@ const handleAPIs =() =>{
 
   app.post("/api/users/", async function(req,res){
 
-    const username = req.body.username
+    let username = req.body.username
+    username = username.trim()
     if(!username){
       res.json({_id:'0',username:username, message:"Can't enter an empty username!"})
       return
