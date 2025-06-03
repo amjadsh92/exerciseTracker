@@ -128,24 +128,30 @@ function AddExercises(){
 
   const [exercise, setExercise] = useState({description:"", duration:0, date:""});
   const [dialog, setDialog] = useState({visible:false, message:""});
+  const [id, setId] = useState("")
+
+  const handleIdChange =(e) =>{
+    setId(e.target.value)
+  }
   
   const handleChange = (e) => {
     setExercise({...exercise,[e.target.name]:
      e.target.value,}
     );
+    
   };
 
 
-  const  handleSubmit = async (e) => {
+  const  handleSubmit = async (e, id) => {
     e.preventDefault(); 
 
      try {
-      const response = await fetch("http://localhost:3000/api/users", {
+      const response = await fetch(`http://localhost:3000/api/users/${id}/exercises`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({username}),
+        body: JSON.stringify(exercise),
       });
 
       const result = await response.json();
@@ -167,27 +173,42 @@ function AddExercises(){
 
 
     <Card title="Add Exercises" className="w-17rem h-27rem m-4">
-      <form className="p-fluid">
+      <form className="p-fluid" onSubmit={(e) => handleSubmit(e, id)}>
         <div className="field mb-4">
           <FloatLabel className="mb-5">
-            <InputText id="_id" name="_id" />
+            <InputText id="_id" name="_id" onChange={handleIdChange} />
             <label htmlFor="username">_id</label>
           </FloatLabel >
           <FloatLabel className="mb-5">
-            <InputText id="description" name="description" />
+            <InputText id="description" name="description" onChange={handleChange} />
             <label htmlFor="description">description*</label>
           </FloatLabel>
           <FloatLabel className="mb-5">
-            <InputText id="duration" name="duration" />
+            <InputText id="duration" name="duration" onChange={handleChange} />
             <label htmlFor="duration">duration*(min.)</label>
           </FloatLabel>
           <FloatLabel className="mb-5">
-            <InputText id="date" name="date" />
+            <InputText id="date" name="date" onChange={handleChange} />
             <label htmlFor="date">date(yyyy-mm-dd)</label>
           </FloatLabel>
         </div>
-        <Button label="Add" type="submit" className="w-full" />
+        <Button label="Add" type="submit" className="w-full"  />
       </form>
+
+      <Dialog
+        header="Submission"
+        visible={dialog.visible}
+        style={{ width: "350px" }}
+        onHide={() => setDialog({...dialog,visible:false})}
+        footer={
+          <div>
+            <Button label="OK" icon="pi pi-check" onClick={() => setDialog({...dialog,visible:false}) } autoFocus />
+          </div>
+        }
+      >
+        <p className="m-0">{dialog.message}</p>
+      </Dialog>
+
     </Card>
   )
 }
