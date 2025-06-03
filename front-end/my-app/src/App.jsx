@@ -126,6 +126,43 @@ function AddUser(){
 
 function AddExercises(){
 
+  const [exercise, setExercise] = useState({description:"", duration:0, date:""});
+  const [dialog, setDialog] = useState({visible:false, message:""});
+  
+  const handleChange = (e) => {
+    setExercise({...exercise,[e.target.name]:
+     e.target.value,}
+    );
+  };
+
+
+  const  handleSubmit = async (e) => {
+    e.preventDefault(); 
+
+     try {
+      const response = await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({username}),
+      });
+
+      const result = await response.json();
+    
+      setDialog({visible:true, message: result.message});
+      
+    } catch (error) {
+      
+      setDialog({visible:true, message:`Failed to add user. Please Try again.`});
+      
+    }
+
+  }
+
+
+
+
   return(
 
 
@@ -133,19 +170,19 @@ function AddExercises(){
       <form className="p-fluid">
         <div className="field mb-4">
           <FloatLabel className="mb-5">
-            <InputText id="username" />
+            <InputText id="_id" name="_id" />
             <label htmlFor="username">_id</label>
           </FloatLabel >
           <FloatLabel className="mb-5">
-            <InputText id="description" />
+            <InputText id="description" name="description" />
             <label htmlFor="description">description*</label>
           </FloatLabel>
           <FloatLabel className="mb-5">
-            <InputText id="duration" />
+            <InputText id="duration" name="duration" />
             <label htmlFor="duration">duration*(min.)</label>
           </FloatLabel>
           <FloatLabel className="mb-5">
-            <InputText id="data" />
+            <InputText id="date" name="date" />
             <label htmlFor="date">date(yyyy-mm-dd)</label>
           </FloatLabel>
         </div>

@@ -67,6 +67,36 @@ const handleAPIs =() =>{
     res.json({_id: id, username: username, message:`We have added ${username} to our list!`})
 
   })
+
+  app.post("/api/users/:_id/exercises", async function (req, res){
+
+    let id = req.params._id
+    let {description, duration, date} = req.body
+    duration = Number(duration)
+    id = id.trim()
+    
+    if(id === ":_id" || !id){
+      res.json({message:"id is not provided"})
+      return
+    }
+
+    const selectQuery = `SELECT username FROM users WHERE id=$1`
+    const result = await pool.query(selectQuery, [`${id}`])
+    const usernameExists =  result.rows.length
+    if(!usernameExists){
+      res.json({message:`The _id '${id}' doesn't exist in our list.`})
+      return
+    }
+    
+    let username = result.rows[0].username
+
+    const insertQuery = `INSERT INTO exercises(id,description, duration, date) VALUES($1,$2,$3,$4)`
+    const insertResult = await pool.query(insertQuery,[id,description,duration,date])
+    res.json({_id:id, description, duration, date, message:`The exercise with,\nDescription:${description}\nDuration:${duration}\nDate:${date}\nhas been added to ${username}'s list of exercises.`})
+
+
+
+})
 }
 
 connectToDatabase()
