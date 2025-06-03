@@ -79,7 +79,7 @@ function AddUser(){
 
       const result = await response.json();
     
-      setDialog({visible:true, message:`We have successfully added ${result.username} with id "${result._id}" to our list!`});
+      setDialog({visible:true, message: result.message});
       
     } catch (error) {
       
