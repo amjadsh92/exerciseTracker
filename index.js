@@ -47,7 +47,10 @@ const handleAPIs =() =>{
   app.post("/api/users/", async function(req,res){
 
     const username = req.body.username
-
+    if(!username){
+      res.json({_id:'0',username:username, message:"Can't enter an empty username!"})
+      return
+    }
     const selectUsername = `SELECT id FROM users WHERE username=$1`
     const selectResult = await pool.query(selectUsername, [`${username}`])
     const usernameExists = selectResult.rows.length
@@ -59,9 +62,7 @@ const handleAPIs =() =>{
 
     const id = uuidv4() 
     const insertQuery = `INSERT INTO users(id,username) VALUES($1,$2)`
-    
     const insertResult  = await pool.query(insertQuery,[`${id}`,`${username}`] )
-
     res.json({_id: id, username: username, message:`We have added ${username} to our list!`})
 
   })
