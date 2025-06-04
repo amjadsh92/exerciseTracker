@@ -180,11 +180,11 @@ function AddExercises(){
             <label htmlFor="username">_id</label>
           </FloatLabel >
           <FloatLabel className="mb-5">
-            <InputText id="description" name="description" onChange={handleChange} />
+            <InputText id="description" name="description" onChange={handleChange} required />
             <label htmlFor="description">description*</label>
           </FloatLabel>
           <FloatLabel className="mb-5">
-            <InputText id="duration" name="duration" onChange={handleChange} />
+            <InputText id="duration" name="duration" onChange={handleChange} required />
             <label htmlFor="duration">duration*(min.)</label>
           </FloatLabel>
           <FloatLabel className="mb-5">

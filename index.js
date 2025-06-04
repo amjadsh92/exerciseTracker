@@ -72,13 +72,24 @@ const handleAPIs =() =>{
 
     let id = req.params._id
     let {description, duration, date} = req.body
+    
+    duration = duration.trim().replace(/\s+/g,"");
     duration = Number(duration)
+    if (!Number.isInteger(duration) || duration <= 0) {
+      res.json({ message: "Duration must be a positive integer." });
+      return;
+    }
+
     id = id.trim()
     
-    if(id === ":_id" || !id){
-      res.json({message:"id is not provided"})
-      return
-    }
+    
+    
+    // if(id === ":_id" || !id){
+    //   res.json({message:"id is not provided"})
+    //   return
+    // }
+
+    
 
     const selectQuery = `SELECT username FROM users WHERE id=$1`
     const result = await pool.query(selectQuery, [`${id}`])
@@ -92,7 +103,7 @@ const handleAPIs =() =>{
 
     const insertQuery = `INSERT INTO exercises(id,description, duration, date) VALUES($1,$2,$3,$4)`
     const insertResult = await pool.query(insertQuery,[id,description,duration,date])
-    res.json({_id:id, description, duration, date, message:`The exercise with,\nDescription:${description}\nDuration:${duration}\nDate:${date}\nhas been added to ${username}'s list of exercises.`})
+    res.json({_id:id, description, duration, date, message:`The exercise with \nDescription: ${description}\nDuration: ${duration}min\nDate: ${date}\nhas been added to ${username}'s list of exercises.`})
 
 
 
