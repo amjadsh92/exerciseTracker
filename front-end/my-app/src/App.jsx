@@ -176,7 +176,7 @@ function AddExercises(){
       <form className="p-fluid" onSubmit={(e) => handleSubmit(e, id)}>
         <div className="field mb-4">
           <FloatLabel className="mb-5">
-            <InputText id="_id" name="_id" onChange={handleIdChange} />
+            <InputText id="_id" name="_id" onChange={handleIdChange} required />
             <label htmlFor="username">_id</label>
           </FloatLabel >
           <FloatLabel className="mb-5">
@@ -206,7 +206,9 @@ function AddExercises(){
           </div>
         }
       >
-        <p className="m-0">{dialog.message}</p>
+        {dialog.message.split('\n').map((line, index) => (
+  <p key={index}>{line}</p>
+))}
       </Dialog>
 
     </Card>
