@@ -163,11 +163,11 @@ function AddExercises(){
 
       if (response.ok){
       const result = await response.json();
-      const {description, duration, date} = result
-      setDialog({visible:true, message: `The exercise with<br/>
+      const {description, duration, date, username} = result
+      setDialog({visible:true, message: `The exercise with<br/><br/>
       <b>Description:</b> ${description}<br/>
       <b>Duration:</b> ${duration} min<br/>
-      <b>Date:</b> ${date}<br/>
+      <b>Date:</b> ${date}<br/><br />
       has been added to <b>${username}</b>'s list of exercises.`});
       }
       if(!response.ok){
@@ -224,7 +224,7 @@ function AddExercises(){
         }
       >
         
-      <p >{dialog.message}</p>
+        <div dangerouslySetInnerHTML={{ __html: dialog.message }} />
 
       </Dialog>
 

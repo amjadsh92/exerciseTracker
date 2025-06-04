@@ -94,7 +94,7 @@ const handleAPIs =() =>{
 
     const insertQuery = `INSERT INTO exercises(id,description, duration, date) VALUES($1,$2,$3,$4)`
     const insertResult = await pool.query(insertQuery,[id,description,duration,date])
-    res.json({_id:id, description, duration, date, message:`The exercise with \nDescription: ${description}\nDuration: ${duration}min\nDate: ${date}\nhas been added to ${username}'s list of exercises.`})
+    res.json({_id:id, description, duration, date, username})
 
 
 
