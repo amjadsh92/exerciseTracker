@@ -76,10 +76,17 @@ function AddUser(){
         },
         body: JSON.stringify({username}),
       });
-
-      const result = await response.json();
+      if (response.ok)
+     { const result = await response.json();
     
       setDialog({visible:true, message: result.message});
+     }
+     if(!response.ok){
+
+      const result = await response.json();
+      setDialog({visible:true, message: result.error});
+
+     }
       
     } catch (error) {
       
@@ -154,13 +161,23 @@ function AddExercises(){
         body: JSON.stringify(exercise),
       });
 
+      if (response.ok){
       const result = await response.json();
-    
-      setDialog({visible:true, message: result.message});
+      const {description, duration, date} = result
+      setDialog({visible:true, message: `The exercise with<br/>
+      <b>Description:</b> ${description}<br/>
+      <b>Duration:</b> ${duration} min<br/>
+      <b>Date:</b> ${date}<br/>
+      has been added to <b>${username}</b>'s list of exercises.`});
+      }
+      if(!response.ok){
+        const result = await response.json();
+        setDialog({visible:true, message:result.error})
+      }
       
     } catch (error) {
       
-      setDialog({visible:true, message:`Failed to add user. Please Try again.`});
+      setDialog({visible:true, message: `Failed to add user. Please Try again.`});
       
     }
 
@@ -206,9 +223,9 @@ function AddExercises(){
           </div>
         }
       >
-        {dialog.message.split('\n').map((line, index) => (
-  <p key={index}>{line}</p>
-))}
+        
+      <p >{dialog.message}</p>
+
       </Dialog>
 
     </Card>

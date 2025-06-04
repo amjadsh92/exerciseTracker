@@ -49,7 +49,7 @@ const handleAPIs =() =>{
     let username = req.body.username
     username = username.trim()
     if(!username){
-      res.json({_id:'0',username:username, message:"Can't enter an empty username!"})
+      res.status(400).json({message:"Can't enter an empty username!"})
       return
     }
     const selectUsername = `SELECT id FROM users WHERE username=$1`
@@ -76,26 +76,17 @@ const handleAPIs =() =>{
     duration = duration.trim().replace(/\s+/g,"");
     duration = Number(duration)
     if (!Number.isInteger(duration) || duration <= 0) {
-      res.json({ message: "Duration must be a positive integer." });
+      res.status(400).json({ error: "Duration must be a positive integer." });
       return;
     }
 
     id = id.trim()
     
-    
-    
-    // if(id === ":_id" || !id){
-    //   res.json({message:"id is not provided"})
-    //   return
-    // }
-
-    
-
     const selectQuery = `SELECT username FROM users WHERE id=$1`
     const result = await pool.query(selectQuery, [`${id}`])
     const usernameExists =  result.rows.length
     if(!usernameExists){
-      res.json({message:`The _id '${id}' doesn't exist in our list.`})
+      res.status(400).json({error:`The _id '${id}' doesn't exist in our list.`})
       return
     }
     
