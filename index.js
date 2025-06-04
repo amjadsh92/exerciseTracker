@@ -91,13 +91,31 @@ const handleAPIs =() =>{
     }
     
     let username = result.rows[0].username
+    let submittedDate = new Date (date)
+    let isValidDate = !isNaN(submittedDate?.getTime())     
+    let currentDate;
+    
 
-    const insertQuery = `INSERT INTO exercises(id,description, duration, date) VALUES($1,$2,$3,$4)`
-    const insertResult = await pool.query(insertQuery,[id,description,duration,date])
-    res.json({_id:id, description, duration, date, username})
+    if (!date){
+      
+      const now = new Date();
+      currentDate = now.toDateString();
+      const insertQuery = `INSERT INTO exercises(id,description, duration, date) VALUES($1,$2,$3,$4)`
+      const insertResult = await pool.query(insertQuery,[id,description,duration,currentDate])
+      res.json({_id:id, description, duration, date:currentDate, username})
+    }
+    else if(date.match(/^-?\d+$/) || !isValidDate){
+      
+      res.status(400).json({error:`The date is invalid`})
+      return
+    }
 
-
-
+    else{
+            
+      let formattedDate = submittedDate.toDateString();
+      res.json({_id:id, description, duration, date:formattedDate, username})
+    }
+    
 })
 }
 
