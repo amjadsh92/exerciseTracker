@@ -43,7 +43,22 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 
 const handleAPIs =() =>{
 
+  app.get("/api/users/",async function(req,res){
 
+    const selectAllUsers = `SELECT * FROM users`
+    
+    const allUsersResult = await pool.query(selectAllUsers)
+
+    const arrayOfAllUsers  = allUsersResult.rows
+
+    res.json(arrayOfAllUsers)
+
+}
+
+
+
+
+)
   app.post("/api/users/", async function(req,res){
 
     let username = req.body.username
@@ -52,25 +67,25 @@ const handleAPIs =() =>{
       res.status(400).json({message:"Can't enter an empty username!"})
       return
     }
-    const selectUsername = `SELECT id FROM users WHERE username=$1`
+    const selectUsername = `SELECT _id FROM users WHERE username=$1`
     const selectResult = await pool.query(selectUsername, [`${username}`])
     const usernameExists = selectResult.rows.length
     if(usernameExists){
-      const id = selectResult.rows[0]._id;
-      res.json({_id: id, username: username, message:`Username ${username} already exists.`})
+      const _id = selectResult.rows[0]._id;
+      res.json({_id, username: username, message:`Username ${username} already exists.`})
       return
     } 
 
-    const id = uuidv4() 
-    const insertQuery = `INSERT INTO users(id,username) VALUES($1,$2)`
-    const insertResult  = await pool.query(insertQuery,[`${id}`,`${username}`] )
-    res.json({_id: id, username: username, message:`We have added ${username} to our list!`})
+    const _id = uuidv4() 
+    const insertQuery = `INSERT INTO users(_id,username) VALUES($1,$2)`
+    const insertResult  = await pool.query(insertQuery,[`${_id}`,`${username}`] )
+    res.json({_id, username: username, message:`We have added ${username} to our list!`})
 
   })
 
   app.post("/api/users/:_id/exercises", async function (req, res){
 
-    let id = req.params._id
+    let _id = req.params._id
     let {description, duration, date} = req.body
 
     if(!description){
@@ -90,13 +105,13 @@ const handleAPIs =() =>{
       return;
     }
 
-    id = id.trim()
+    _id = _id.trim()
     
-    const selectQuery = `SELECT username FROM users WHERE id=$1`
-    const result = await pool.query(selectQuery, [`${id}`])
+    const selectQuery = `SELECT username FROM users WHERE _id=$1`
+    const result = await pool.query(selectQuery, [`${_id}`])
     const usernameExists =  result.rows.length
     if(!usernameExists){
-      res.status(400).json({error:`The _id '${id}' doesn't correspond to any username.`})
+      res.status(400).json({error:`The _id '${_id}' doesn't correspond to any username.`})
       return
     }
     
@@ -110,9 +125,9 @@ const handleAPIs =() =>{
       
       const now = new Date();
       currentDate = now.toDateString();
-      const insertQuery = `INSERT INTO exercises(id,description, duration, date) VALUES($1,$2,$3,$4)`
-      const insertResult = await pool.query(insertQuery,[id,description,duration,currentDate])
-      res.json({_id:id, description, duration, date:currentDate, username})
+      const insertQuery = `INSERT INTO exercises(_id,description, duration, date) VALUES($1,$2,$3,$4)`
+      const insertResult = await pool.query(insertQuery,[_id,description,duration,currentDate])
+      res.json({_id, description, duration, date:currentDate, username})
     }
     else if(date.match(/^-?\d+$/) || !isValidDate){
       
@@ -123,7 +138,7 @@ const handleAPIs =() =>{
     else{
             
       let formattedDate = submittedDate.toDateString();
-      res.json({_id:id, description, duration, date:formattedDate, username})
+      res.json({_id, description, duration, date:formattedDate, username})
     }
     
 })
