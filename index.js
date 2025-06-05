@@ -46,19 +46,52 @@ const handleAPIs =() =>{
   app.get("/api/users/",async function(req,res){
 
     const selectAllUsers = `SELECT * FROM users`
-    
     const allUsersResult = await pool.query(selectAllUsers)
-
     const arrayOfAllUsers  = allUsersResult.rows
-
     res.json(arrayOfAllUsers)
 
 }
 
-
-
-
 )
+
+app.get("/api/users/:_id/logs", async function(req,res){
+
+   const _id = req.params._id
+
+   const selectUserQuery = "SELECT username FROM users WHERE _id=$1"
+
+   const usernameResult = await pool.query(selectUserQuery,[`${_id}`])
+
+   const usernameExists = usernameResult.rows.length
+
+   if(!usernameExists){
+    res.status(400).json({"error": "This _id doesn't correspond to any username"})
+    return
+   }
+
+   const username = usernameResult.rows[0].username
+   
+   const selectExercisesQuery = "SELECT description,duration,date FROM exercises WHERE _id=$1"
+   
+   const exercisesResult = await pool.query(selectExercisesQuery,[`${_id}`])
+
+   const exercises = exercisesResult.rows
+
+   for (const exercise of exercises){
+    exercise.duration = Number(exercise.duration)
+    exercise.date= exercise.date.toDateString()
+   }
+
+   const countQuery = `SELECT COUNT(*) FROM exercises WHERE _id=$1`
+   
+   const countResult = await pool.query(countQuery,[`${_id}`] )
+
+   const count  = Number(countResult.rows[0].count)
+  
+   res.json({_id,count, username, log: exercises})
+
+})
+
   app.post("/api/users/", async function(req,res){
 
     let username = req.body.username
@@ -138,6 +171,8 @@ const handleAPIs =() =>{
     else{
             
       let formattedDate = submittedDate.toDateString();
+      const insertQuery = `INSERT INTO exercises(_id,description, duration, date) VALUES($1,$2,$3,$4)`
+      const insertResult = await pool.query(insertQuery,[_id,description,duration,formattedDate])
       res.json({_id, description, duration, date:formattedDate, username})
     }
     
