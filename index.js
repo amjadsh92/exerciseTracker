@@ -72,6 +72,16 @@ const handleAPIs =() =>{
 
     let id = req.params._id
     let {description, duration, date} = req.body
+
+    if(!description){
+      res.status(400).json({error:"Please provide a description"})
+      return
+    }
+
+    if(!duration){
+      res.status(400).json({error:"Please provide a duration"})
+      return
+    }
     
     duration = duration.trim().replace(/\s+/g,"");
     duration = Number(duration)
@@ -86,7 +96,7 @@ const handleAPIs =() =>{
     const result = await pool.query(selectQuery, [`${id}`])
     const usernameExists =  result.rows.length
     if(!usernameExists){
-      res.status(400).json({error:`The _id '${id}' doesn't exist in our list.`})
+      res.status(400).json({error:`The _id '${id}' doesn't correspond to any username.`})
       return
     }
     
