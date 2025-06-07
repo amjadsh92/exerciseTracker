@@ -59,9 +59,7 @@ app.get("/api/users/:_id/logs", async function(req,res){
    const _id = req.params._id
 
    const selectUserQuery = "SELECT username FROM users WHERE _id=$1"
-
    const usernameResult = await pool.query(selectUserQuery,[`${_id}`])
-
    const usernameExists = usernameResult.rows.length
 
    if(!usernameExists){
@@ -69,12 +67,30 @@ app.get("/api/users/:_id/logs", async function(req,res){
     return
    }
 
-   const username = usernameResult.rows[0].username
-   
-   const selectExercisesQuery = "SELECT description,duration,date FROM exercises WHERE _id=$1"
-   
-   const exercisesResult = await pool.query(selectExercisesQuery,[`${_id}`])
+  const username = usernameResult.rows[0].username
 
+  const startDate = req.query.from;
+  const endDate = req.query.to;
+  const limit = req.query.limit;
+
+  let query = `SELECT description, duration, date FROM exercises WHERE _id = $1`;
+  const params = [_id];
+
+  if (startDate && !isNaN(new Date(startDate).getTime())) {
+    params.push(startDate);
+    query += ` AND date >= $${params.length}`;
+  }
+
+  if (endDate && !isNaN(new Date(endDate).getTime())) {
+    params.push(endDate);
+    query += ` AND date <= $${params.length}`;
+  }
+
+  if (limit && !isNaN(Number(limit))) {
+    query += ` LIMIT $${params.length + 1}`;
+    params.push(Number(limit));
+  }
+   const exercisesResult = await pool.query(query,params)
    const exercises = exercisesResult.rows
 
    for (const exercise of exercises){
@@ -83,9 +99,7 @@ app.get("/api/users/:_id/logs", async function(req,res){
    }
 
    const countQuery = `SELECT COUNT(*) FROM exercises WHERE _id=$1`
-   
    const countResult = await pool.query(countQuery,[`${_id}`] )
-
    const count  = Number(countResult.rows[0].count)
   
    res.json({_id,count, username, log: exercises})
