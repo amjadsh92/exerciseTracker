@@ -386,7 +386,7 @@ function DeleteUser(){
 function UserDetailsPage({ exercisesToShow }) {
   const { id } = useParams();
   const location = useLocation();
-
+  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const from = params.get('from');
   const to = params.get('to');
@@ -406,6 +406,8 @@ function UserDetailsPage({ exercisesToShow }) {
       ) : (
         <p>No exercises to show.</p>
       )}
+
+     <Button label="Back to Home" icon="pi pi-home" className="mt-4" onClick={() => navigate('/')} />
     </div>
   );
 }
