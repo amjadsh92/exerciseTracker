@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { useParams, useLocation } from 'react-router-dom';
 import {
   BrowserRouter as Router,
@@ -21,6 +23,7 @@ import 'primeflex/primeflex.css';
 import './styles/spaces.css'
 import './App.css'
 
+
 function App() {
 
   const [exercisesToShow, setExercisesToShow] = useState({})
@@ -34,8 +37,8 @@ function App() {
   return (
     <Router>
       
-      <div className="min-h-screen bg-gray-100 w-full">
-      <div id="title" className="title mt-100px text-center text-5xl">Exercise Tracker</div>
+      <div className="home bg-gray-100 w-full">
+      <div id="title" className="title mt-40px text-center text-5xl">Exercise Tracker</div>
       <Routes>
       <Route path="/" element={<Forms exercisesToShow = {exercisesToShow} addExercises={addExercises} />} />
       <Route path="/users/:id/logs" element={<UserDetailsPage exercisesToShow = {exercisesToShow} />} />
@@ -296,6 +299,8 @@ function ShowDetails({addExercises, exercisesToShow}){
       if (response.ok){
       const result = await response.json();
       const {username,count,log} = result
+      if (username) params.append("username", username); 
+      if (count) params.append("count", count);   
       addExercises(log)
       // log.forEach((exercise) => console.log(exercise.description+"</br>"))
       // let message = `${username} has ${count}
@@ -391,24 +396,34 @@ function UserDetailsPage({ exercisesToShow }) {
   const from = params.get('from');
   const to = params.get('to');
   const limit = params.get('limit');
+  const username = params.get("username")
+  const count = params.get("count")
 
   return (
     <div>
-      <h2>Exercise Logs for User ID: {id}</h2>
-      <p>From: {from}</p>
-      <p>To: {to}</p>
-      <p>Limit: {limit}</p>
-      <h3>Exercises to Show:</h3>
-      {exercisesToShow && exercisesToShow.length > 0 ? (
+      <p className="mt-40px text-center text-3xl">Welcome to {username}'s page</p>
+      <p className="mt-40px text-center text-2xl"> {username} has {count} exercises. In the table below is the list of his exercises.{(from || to)
+    ? `We will show their exercises ${from ? `from the date ${from}` : ""} ${to ? `until the date ${to}` : ""}`
+    : (limit ? `The limit of the number of exercises to show is ${limit}` : "")}</p>
+      
+      {/* {exercisesToShow && exercisesToShow.length > 0 ? (
         exercisesToShow.map((exercise, index) => (
           <p key={index}>{exercise.description}</p>
         ))
       ) : (
         <p>No exercises to show.</p>
-      )}
+      )} */}
+
+      <DataTable value={exercisesToShow} className="w-7 mx-auto">
+      <Column field="description" header="Description"  className="w-4 text-center"></Column>
+      <Column field="duration" header="Duration" className="w-4 text-center"></Column>
+      <Column field="date" header="Date" className="w-4 text-center" ></Column>
+      </DataTable>
 
      <Button label="Back to Home" icon="pi pi-home" className="mt-4" onClick={() => navigate('/')} />
     </div>
+
+
   );
 }
 

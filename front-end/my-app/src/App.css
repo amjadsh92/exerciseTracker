@@ -4,6 +4,20 @@
   box-sizing: border-box;
 } */
 
+/* 
+.p-column-header-content{
+  display:block !important
+} */
+
+.p-datatable .p-datatable-thead > tr > th {
+  
+  text-align:center !important;
+}
+
+.home{
+  padding:1px;
+}
+
 .app{
 
   /* background-color:#EBFFD8; */
@@ -22,7 +36,7 @@
 }
 
 .title{
-  margin-top:100px;
+  
   text-align: center;
   font-size: 50px;
   font-family: "Poppins";
