@@ -89,7 +89,7 @@ app.get("/api/users/:_id/logs", async function(req,res){
     return
 }
 
-  if(endDate && isNaN(new Date(startDate).getTime())){
+  if(endDate && isNaN(new Date(endDate).getTime())){
     res.status(400).json({error:"The date is invalid"})
     return
   }
