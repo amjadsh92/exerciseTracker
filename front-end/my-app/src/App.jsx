@@ -1,6 +1,13 @@
 /* eslint-disable */
 
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { useParams, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate
+} from 'react-router-dom';
 import { useState } from 'react'
 import { Dialog } from 'primereact/dialog';
 import { Card } from 'primereact/card';
@@ -15,23 +22,33 @@ import './styles/spaces.css'
 import './App.css'
 
 function App() {
+
+  const [exercisesToShow, setExercisesToShow] = useState({})
+
+  function addExercises(exercises){
+       
+    setExercisesToShow(exercises)
+  }
   
 
   return (
-    <>
-    
-    <div className="min-h-screen bg-gray-100 w-full">
-      <div id="title" className="title mt-100px text-center text-5xl">Exercise Tracker</div>
-      < Forms />
-    </div>
+    <Router>
       
-    </>
+      <div className="min-h-screen bg-gray-100 w-full">
+      <div id="title" className="title mt-100px text-center text-5xl">Exercise Tracker</div>
+      <Routes>
+      <Route path="/" element={<Forms exercisesToShow = {exercisesToShow} addExercises={addExercises} />} />
+      <Route path="/users/:id/logs" element={<UserDetailsPage exercisesToShow = {exercisesToShow} />} />
+      </Routes>
+      </div>
+      
+    </Router>
   )
 }
 
 
 
-function Forms(){
+function Forms({exercisesToShow, addExercises}){
 
 
   return (
@@ -41,7 +58,7 @@ function Forms(){
 
     <AddUser />
     <AddExercises />
-    <ShowDetails />
+    <ShowDetails addExercises={addExercises} exercisesToShow = {exercisesToShow}  />
     <DeleteUser />
     
     
@@ -232,10 +249,10 @@ function AddExercises(){
   )
 }
 
-function ShowDetails(){
+function ShowDetails({addExercises, exercisesToShow}){
 
 
-  
+  const navigate = useNavigate();
   const [dialog, setDialog] = useState({visible:false, message:""});
   const [id, setId] = useState("")
   const [from, setFrom] = useState(null)
@@ -279,11 +296,13 @@ function ShowDetails(){
       if (response.ok){
       const result = await response.json();
       const {username,count,log} = result
-      log.forEach((exercise) => console.log(exercise.description+"</br>"))
-      let message = `${username} has ${count}
-      exercises. The exercises are<br/>`
-      log.forEach((exercise) => message += exercise.description + "</br>" )
-      setDialog({visible:true, message});
+      addExercises(log)
+      // log.forEach((exercise) => console.log(exercise.description+"</br>"))
+      // let message = `${username} has ${count}
+      // exercises. The exercises are<br/>`
+      // log.forEach((exercise) => message += exercise.description + "</br>" )
+      //setDialog({visible:true, message});
+      navigate(`/users/${id}/logs?${params.toString()}`); 
       }
       if(!response.ok){
         const result = await response.json();
@@ -362,6 +381,35 @@ function DeleteUser(){
     </Card>
   )
 }
+
+
+function UserDetailsPage({ exercisesToShow }) {
+  const { id } = useParams();
+  const location = useLocation();
+
+  const params = new URLSearchParams(location.search);
+  const from = params.get('from');
+  const to = params.get('to');
+  const limit = params.get('limit');
+
+  return (
+    <div>
+      <h2>Exercise Logs for User ID: {id}</h2>
+      <p>From: {from}</p>
+      <p>To: {to}</p>
+      <p>Limit: {limit}</p>
+      <h3>Exercises to Show:</h3>
+      {exercisesToShow && exercisesToShow.length > 0 ? (
+        exercisesToShow.map((exercise, index) => (
+          <p key={index}>{exercise.description}</p>
+        ))
+      ) : (
+        <p>No exercises to show.</p>
+      )}
+    </div>
+  );
+}
+
 
 
 export default App
