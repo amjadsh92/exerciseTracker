@@ -63,15 +63,55 @@ app.get("/api/users/:_id/logs", async function(req,res){
    const usernameExists = usernameResult.rows.length
 
    if(!usernameExists){
-    res.status(400).json({"error": "This _id doesn't correspond to any username"})
+    res.status(400).json({error: "This _id doesn't correspond to any username"})
     return
    }
 
+
+
   const username = usernameResult.rows[0].username
 
-  const startDate = req.query.from;
-  const endDate = req.query.to;
-  const limit = req.query.limit;
+  let startDate = req.query.from;
+  let endDate = req.query.to;
+  let limit = req.query.limit;
+  
+  if(limit){
+    limit = limit.trim()
+  }
+
+  if(startDate && isNaN(new Date(startDate).getTime())){
+    res.status(400).json({error:"The date is invalid"})
+    return
+  }
+
+  if(startDate && startDate.match(/^-?\d+$/)){
+    res.status(400).json({error:"The date is invalid"})
+    return
+}
+
+  if(endDate && isNaN(new Date(startDate).getTime())){
+    res.status(400).json({error:"The date is invalid"})
+    return
+  }
+
+  if(endDate && endDate.match(/^-?\d+$/)){
+    res.status(400).json({error:"The date is invalid"})
+    return
+  }
+
+  if (startDate && endDate && (startDate > endDate)){
+
+    res.status(400).json({error:"The start date can't be larger than the end date"})
+    return
+  }
+
+  if (limit && !limit.match(/^\d+$/)){
+    res.status(400).json({error:"The number of exercises should be a positive integer"})
+    return
+  }
+
+
+  
 
   let query = `SELECT description, duration, date FROM exercises WHERE _id = $1`;
   const params = [_id];

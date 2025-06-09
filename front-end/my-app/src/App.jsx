@@ -235,18 +235,111 @@ function AddExercises(){
 function ShowDetails(){
 
 
+  
+  const [dialog, setDialog] = useState({visible:false, message:""});
+  const [id, setId] = useState("")
+  const [from, setFrom] = useState(null)
+  const [to, setTo] = useState(null)
+  const [limit, setLimit] = useState(null)
+
+  const handleIdChange =(e) =>{
+    setId(e.target.value)
+  }
+
+
+  const handleStartDateChange = (e) =>{
+    setFrom(e.target.value)
+  }
+
+  const handleEndDateChange = (e) =>{
+    setTo(e.target.value)
+  }
+
+  const handleLimitChange = (e) =>{
+    setLimit(e.target.value)
+  }
+  
+  
+
+
+  const  handleSubmit = async (e, id, from, to, limit) => {
+    e.preventDefault();
+    
+    const params = new URLSearchParams();
+
+    if (from) params.append("from", from); 
+    if (to) params.append("to", to);       
+    if (limit) params.append("limit", limit); 
+
+    const url = `http://localhost:3000/api/users/${id}/logs?${params.toString()}`;
+
+     try {
+      const response = await fetch(url);
+
+      if (response.ok){
+      const result = await response.json();
+      const {username,count,log} = result
+      log.forEach((exercise) => console.log(exercise.description+"</br>"))
+      let message = `${username} has ${count}
+      exercises. The exercises are<br/>`
+      log.forEach((exercise) => message += exercise.description + "</br>" )
+      setDialog({visible:true, message});
+      }
+      if(!response.ok){
+        const result = await response.json();
+        setDialog({visible:true, message:result.error})
+      }
+      
+    } catch (error) {
+      
+      setDialog({visible:true, message: `Failed to add user. Please Try again.`});
+      
+    }
+
+  }
+
+
   return(
-    <Card title="Show User Details" className="w-17rem h-27rem m-4">
-      <form className="p-fluid">
+    <Card title="Show User Exercises" className="w-17rem h-27rem m-4">
+      <form className="p-fluid" onSubmit={(e) => handleSubmit(e,id,from, to, limit)}>
         <div className="field mb-4">
-          <FloatLabel className="mb-4">
-            <InputText id="username" />
-            <label htmlFor="username">Username</label>
+          <FloatLabel className="mb-5">
+            <InputText id="id" onChange={handleIdChange} required />
+            <label htmlFor="id">_id</label>
+          </FloatLabel>
+          <FloatLabel className="mb-5">
+            <InputText id="startDate" onChange={handleStartDateChange} />
+            <label htmlFor="startDate">from (yyyy-mm-dd)</label>
+          </FloatLabel>
+          <FloatLabel className="mb-5">
+            <InputText id="endDate" onChange={handleEndDateChange}/>
+            <label htmlFor="endDate">to (yyyy-mm-dd)</label>
+          </FloatLabel>
+          <FloatLabel className="mb-5">
+            <InputText id="limit" onChange={handleLimitChange} />
+            <label htmlFor="limit">number of exercises</label>
           </FloatLabel>
         </div>
         <Button label="Show" type="submit" className="w-full" />
       </form>
-    </Card>
+      <Dialog
+        header="Submission"
+        visible={dialog.visible}
+        style={{ width: "350px" }}
+        onHide={() => setDialog({...dialog,visible:false})}
+        footer={
+          <div>
+            <Button label="OK" icon="pi pi-check" onClick={() => setDialog({...dialog,visible:false}) } autoFocus />
+          </div>
+        }
+      >
+        
+        <div dangerouslySetInnerHTML={{ __html: dialog.message }} />
+
+  </Dialog>
+  </Card>
+    
+    
   )
 }
 
