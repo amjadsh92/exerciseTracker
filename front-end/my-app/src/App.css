@@ -9,6 +9,10 @@
   display:block !important
 } */
 
+.word-break{
+  word-break: break-word;
+}
+
 .p-datatable .p-column-header-content {
   display:block;
 } 

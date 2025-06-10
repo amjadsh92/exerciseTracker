@@ -429,7 +429,7 @@ function UserDetailsPage() {
       </p>
 
       <DataTable value={exercisesToShow} className="w-7 mx-auto mt-8">
-        <Column field="description" header="Description" className="w-4 text-center" />
+        <Column field="description" header="Description" className="word-break w-4 text-center" />
         <Column field="duration" header="Duration" className="w-4 text-center" />
         <Column field="date" header="Date" className="w-4 text-center" />
       </DataTable>
