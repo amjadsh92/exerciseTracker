@@ -154,12 +154,16 @@ app.get("/api/users/:_id/logs", async function(req,res){
       res.status(400).json({message:"Can't enter an empty username!"})
       return
     }
+    if (username.length >= 40){
+      res.status(400).json({error:"The number of characters of the username can't exceed 40"})
+      return
+    }
     const selectUsername = `SELECT _id FROM users WHERE username=$1`
     const selectResult = await pool.query(selectUsername, [`${username}`])
     const usernameExists = selectResult.rows.length
     if(usernameExists){
       const _id = selectResult.rows[0]._id;
-      res.json({_id, username: username, message:`Username ${username} already exists.`})
+      res.status(400).json({_id, username: username, error:`Username ${username} already exists.`})
       return
     } 
 
@@ -177,6 +181,11 @@ app.get("/api/users/:_id/logs", async function(req,res){
 
     if(!description){
       res.status(400).json({error:"Please provide a description"})
+      return
+    }
+
+    if(description.length >= 500){
+      res.status(400).json({error:"You exceeded the maximum number of characters allowed. The maximum number is 500"})
       return
     }
 
