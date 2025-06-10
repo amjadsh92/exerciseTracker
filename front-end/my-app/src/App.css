@@ -9,13 +9,21 @@
   display:block !important
 } */
 
+.p-datatable .p-column-header-content {
+  display:block;
+} 
 .p-datatable .p-datatable-thead > tr > th {
   
   text-align:center !important;
 }
 
+.block{
+  display:block
+}
+
 .home{
   padding:1px;
+  justify-content: center;
 }
 
 .app{

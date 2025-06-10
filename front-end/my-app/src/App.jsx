@@ -398,13 +398,21 @@ function UserDetailsPage({ exercisesToShow }) {
   const limit = params.get('limit');
   const username = params.get("username")
   const count = params.get("count")
-
+  let formattedExercisesToShow = JSON.stringify(exercisesToShow) 
+  formattedExercisesToShow = JSON.parse(formattedExercisesToShow)
+  formattedExercisesToShow.forEach((exercise) => exercise.duration += "min" )
+  
   return (
     <div>
       <p className="mt-40px text-center text-3xl">Welcome to {username}'s page</p>
-      <p className="mt-40px text-center text-2xl"> {username} has {count} exercises. In the table below is the list of his exercises.{(from || to)
-    ? `We will show their exercises ${from ? `from the date ${from}` : ""} ${to ? `until the date ${to}` : ""}`
-    : (limit ? `The limit of the number of exercises to show is ${limit}` : "")}</p>
+      <p className="mt-40px text-center text-xl w-7 mx-auto">
+  {username} has {count} exercises. In the table below the list of his/her exercises.
+  {(from || to || limit) &&
+    ` ${from || to
+      ? `We will show their exercises ${from ? `from the date ${from}` : ""}${to ? ` until the date ${to}` : ""}. `
+      : ""}${limit ? `The limit of the number of exercises to show is ${limit}.` : ""}`
+  }
+</p>
       
       {/* {exercisesToShow && exercisesToShow.length > 0 ? (
         exercisesToShow.map((exercise, index) => (
@@ -414,13 +422,13 @@ function UserDetailsPage({ exercisesToShow }) {
         <p>No exercises to show.</p>
       )} */}
 
-      <DataTable value={exercisesToShow} className="w-7 mx-auto">
+      <DataTable value={formattedExercisesToShow} className="w-7 mx-auto mt-8">
       <Column field="description" header="Description"  className="w-4 text-center"></Column>
       <Column field="duration" header="Duration" className="w-4 text-center"></Column>
       <Column field="date" header="Date" className="w-4 text-center" ></Column>
       </DataTable>
 
-     <Button label="Back to Home" icon="pi pi-home" className="mt-4" onClick={() => navigate('/')} />
+     <Button label="Back to Home" icon="pi pi-home" className="block mt-8 mb-8 mx-auto w-2" onClick={() => navigate('/')} />
     </div>
 
 
