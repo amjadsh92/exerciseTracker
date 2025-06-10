@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { useEffect, useState } from 'react'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useParams, useLocation } from 'react-router-dom';
@@ -10,7 +10,7 @@ import {
   Route,
   useNavigate
 } from 'react-router-dom';
-import { useState } from 'react'
+
 import { Dialog } from 'primereact/dialog';
 import { Card } from 'primereact/card';
 import { FloatLabel } from 'primereact/floatlabel';
@@ -26,12 +26,12 @@ import './App.css'
 
 function App() {
 
-  const [exercisesToShow, setExercisesToShow] = useState({})
+  // const [exercisesToShow, setExercisesToShow] = useState([])
 
-  function addExercises(exercises){
+  // function addExercises(exercises){
        
-    setExercisesToShow(exercises)
-  }
+  //   setExercisesToShow(exercises)
+  // }
   
 
   return (
@@ -40,8 +40,8 @@ function App() {
       <div className="home bg-gray-100 w-full">
       <div id="title" className="title mt-40px text-center text-5xl">Exercise Tracker</div>
       <Routes>
-      <Route path="/" element={<Forms exercisesToShow = {exercisesToShow} addExercises={addExercises} />} />
-      <Route path="/users/:id/logs" element={<UserDetailsPage exercisesToShow = {exercisesToShow} />} />
+      <Route path="/" element={<Forms />} />
+      <Route path="/users/:id/logs" element={<UserDetailsPage  />} />
       </Routes>
       </div>
       
@@ -51,7 +51,7 @@ function App() {
 
 
 
-function Forms({exercisesToShow, addExercises}){
+function Forms(){
 
 
   return (
@@ -61,7 +61,7 @@ function Forms({exercisesToShow, addExercises}){
 
     <AddUser />
     <AddExercises />
-    <ShowDetails addExercises={addExercises} exercisesToShow = {exercisesToShow}  />
+    <ShowDetails />
     <DeleteUser />
     
     
@@ -252,7 +252,7 @@ function AddExercises(){
   )
 }
 
-function ShowDetails({addExercises, exercisesToShow}){
+function ShowDetails(){
 
 
   const navigate = useNavigate();
@@ -301,12 +301,7 @@ function ShowDetails({addExercises, exercisesToShow}){
       const {username,count,log} = result
       if (username) params.append("username", username); 
       if (count) params.append("count", count);   
-      addExercises(log)
-      // log.forEach((exercise) => console.log(exercise.description+"</br>"))
-      // let message = `${username} has ${count}
-      // exercises. The exercises are<br/>`
-      // log.forEach((exercise) => message += exercise.description + "</br>" )
-      //setDialog({visible:true, message});
+    
       navigate(`/users/${id}/logs?${params.toString()}`); 
       }
       if(!response.ok){
@@ -388,53 +383,61 @@ function DeleteUser(){
 }
 
 
-function UserDetailsPage({ exercisesToShow }) {
+function UserDetailsPage() {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const [exercisesToShow, setExercisesToShow] = useState([]);
   const params = new URLSearchParams(location.search);
   const from = params.get('from');
   const to = params.get('to');
   const limit = params.get('limit');
-  const username = params.get("username")
-  const count = params.get("count")
-  let formattedExercisesToShow = JSON.stringify(exercisesToShow) 
-  formattedExercisesToShow = JSON.parse(formattedExercisesToShow)
-  formattedExercisesToShow.forEach((exercise) => exercise.duration += "min" )
-  
+  const username = params.get("username");
+  const count = params.get("count");
+
+  useEffect(() => {
+    const fetchExercises = async () => {
+      const query = new URLSearchParams();
+      if (from) query.append("from", from);
+      if (to) query.append("to", to);
+      if (limit) query.append("limit", limit);
+      try {
+        const res = await fetch(`http://localhost:3000/api/users/${id}/logs?${query.toString()}`);
+        const result = await res.json();
+        if (res.ok) {
+          const { log } = result;
+          log.forEach((exercise) => exercise.duration += "min");
+          setExercisesToShow(log);
+        }
+      } catch (err) {
+        console.error("Failed to fetch exercises", err);
+      }
+    };
+
+    fetchExercises();
+  }, [id, from, to, limit]);
+
   return (
     <div>
       <p className="mt-40px text-center text-3xl">Welcome to {username}'s page</p>
       <p className="mt-40px text-center text-xl w-7 mx-auto">
-  {username} has {count} exercises. In the table below the list of his/her exercises.
-  {(from || to || limit) &&
-    ` ${from || to
-      ? `We will show their exercises ${from ? `from the date ${from}` : ""}${to ? ` until the date ${to}` : ""}. `
-      : ""}${limit ? `The limit of the number of exercises to show is ${limit}.` : ""}`
-  }
-</p>
-      
-      {/* {exercisesToShow && exercisesToShow.length > 0 ? (
-        exercisesToShow.map((exercise, index) => (
-          <p key={index}>{exercise.description}</p>
-        ))
-      ) : (
-        <p>No exercises to show.</p>
-      )} */}
+        {username} has {count} exercises. In the table below the list of his/her exercises.
+        {(from || to || limit) &&
+          ` ${from || to
+            ? `We will show their exercises ${from ? `from the date ${from}` : ""}${to ? ` until the date ${to}` : ""}. `
+            : ""}${limit ? `The limit of the number of exercises to show is ${limit}.` : ""}`}
+      </p>
 
-      <DataTable value={formattedExercisesToShow} className="w-7 mx-auto mt-8">
-      <Column field="description" header="Description"  className="w-4 text-center"></Column>
-      <Column field="duration" header="Duration" className="w-4 text-center"></Column>
-      <Column field="date" header="Date" className="w-4 text-center" ></Column>
+      <DataTable value={exercisesToShow} className="w-7 mx-auto mt-8">
+        <Column field="description" header="Description" className="w-4 text-center" />
+        <Column field="duration" header="Duration" className="w-4 text-center" />
+        <Column field="date" header="Date" className="w-4 text-center" />
       </DataTable>
 
-     <Button label="Back to Home" icon="pi pi-home" className="block mt-8 mb-8 mx-auto w-2" onClick={() => navigate('/')} />
+      <Button label="Back to Home" icon="pi pi-home" className="block mt-8 mb-8 mx-auto w-2" onClick={() => navigate('/')} />
     </div>
-
-
   );
 }
-
 
 
 export default App
