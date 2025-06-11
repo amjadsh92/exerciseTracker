@@ -240,6 +240,33 @@ app.get("/api/users/:_id/logs", async function(req,res){
     }
     
 })
+
+
+app.delete("/api/users/:_id", async function (req, res){
+
+  let _id = req.params._id
+
+  if (!_id){
+    res.status(400).json({error:"An_id should be provided"})
+    return
+  }
+  _id = _id.trim()
+  const selectQuery = `SELECT username FROM users WHERE _id=$1`
+  const result = await pool.query(selectQuery, [`${_id}`])
+  const usernameExists =  result.rows.length
+  if(!usernameExists){
+    res.status(400).json({error:`The _id '${_id}' doesn't correspond to any username.`})
+    return
+  }
+  let username = result.rows[0].username
+  const deleteQuery = `DELETE FROM users WHERE _id=$1`
+  const deleteResult = await pool.query(deleteQuery,[_id])
+  res.json({message:`We have deleted ${username} from our list.`})
+
+
+
+})  
+
 }
 
 connectToDatabase()

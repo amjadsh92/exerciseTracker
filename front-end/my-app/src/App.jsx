@@ -26,12 +26,6 @@ import './App.css'
 
 function App() {
 
-  // const [exercisesToShow, setExercisesToShow] = useState([])
-
-  // function addExercises(exercises){
-       
-  //   setExercisesToShow(exercises)
-  // }
   
 
   return (
@@ -366,14 +360,22 @@ function ShowDetails(){
 function DeleteUser(){
 
 
+  const [dialog, setDialog] = useState({visible:false, message:""});
+  const [id, setId] = useState("")
+  
+
+  const handleIdChange =(e) =>{
+    setId(e.target.value)
+  }
+
   return(
 
     <Card title="Delete User" className="w-17rem h-27rem m-4">
       <form className="p-fluid">
         <div className="field mb-4">
           <FloatLabel className="mb-4">
-            <InputText id="username" />
-            <label htmlFor="username">Username</label>
+            <InputText id="_id" onChange={handleIdChange} />
+            <label htmlFor="username">_id</label>
           </FloatLabel>
         </div>
         <Button label="Delete" type="submit" className="w-full" />
