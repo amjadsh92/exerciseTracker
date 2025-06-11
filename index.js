@@ -170,7 +170,7 @@ app.get("/api/users/:_id/logs", async function(req,res){
     const _id = uuidv4() 
     const insertQuery = `INSERT INTO users(_id,username) VALUES($1,$2)`
     const insertResult  = await pool.query(insertQuery,[`${_id}`,`${username}`] )
-    res.json({_id, username: username, message:`We have added ${username} to our list!`})
+    res.json({_id, username: username, message:`We have added ${username} to our list! His _id is ${_id} `})
 
   })
 

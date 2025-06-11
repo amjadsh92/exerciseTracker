@@ -368,6 +368,35 @@ function DeleteUser(){
     setId(e.target.value)
   }
 
+  const  handleSubmit = async (e, id) => {
+    e.preventDefault(); 
+
+     try {
+      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        }
+
+      });
+
+      if (response.ok){
+            const result = await response.json();
+            setDialog({visible:true, message: result.message});
+      }
+      if(!response.ok){
+        const result = await response.json();
+        setDialog({visible:true, message:result.error})
+      }
+      
+    } catch (error) {
+      
+      setDialog({visible:true, message: `Server error. Please Try again.`});
+      
+    }
+
+  }
+
   return(
 
     <Card title="Delete User" className="w-17rem h-27rem m-4">
@@ -380,6 +409,21 @@ function DeleteUser(){
         </div>
         <Button label="Delete" type="submit" className="w-full" />
       </form>
+      <Dialog
+        header="Submission"
+        visible={dialog.visible}
+        style={{ width: "350px" }}
+        onHide={() => setDialog({...dialog,visible:false})}
+        footer={
+          <div>
+            <Button label="OK" icon="pi pi-check" onClick={() => setDialog({...dialog,visible:false}) } autoFocus />
+          </div>
+        }
+      >
+        
+        <div dangerouslySetInnerHTML={{ __html: dialog.message }} />
+
+  </Dialog>
     </Card>
   )
 }
