@@ -16,12 +16,13 @@ import { Card } from 'primereact/card';
 import { FloatLabel } from 'primereact/floatlabel';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import 'primereact/resources/themes/saga-blue/theme.css'; // or another theme like 'lara-light-blue'
-import 'primereact/resources/primereact.min.css';          // PrimeReact core
+import 'primereact/resources/themes/saga-blue/theme.css'; 
+import 'primereact/resources/primereact.min.css';          
 import 'primeicons/primeicons.css'; 
-import 'primeflex/primeflex.css';   
+// import 'primeflex/primeflex.css';   
 import './styles/spaces.css'
-import './App.css'
+import './styles/_primeflex-custom.scss';
+import './App.scss'
 
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
     <Router>
       
       <div className="home bg-gray-100 w-full">
-      <div id="title" className="title mt-40px text-center text-5xl">Exercise Tracker</div>
+      <div id="title" className="title mt-40px text-center text-4xl sm:text-5xl md:text-5xl">Exercise Tracker</div>
       <Routes>
       <Route path="/" element={<Forms />} />
       <Route path="/users/:id/logs" element={<UserDetailsPage  />} />
@@ -51,7 +52,7 @@ function Forms(){
   return (
 
 
-  <div className="flex flex-wrap justify-content-center mt-90px w-11 mx-auto">
+  <div className="flex flex-wrap justify-content-center mt-90px w-full mx-auto">
 
     <AddUser />
     <AddExercises />
@@ -92,8 +93,10 @@ function AddUser(){
       });
       if (response.ok)
      { const result = await response.json();
-    
-      setDialog({visible:true, message: result.message});
+      const {username, _id} = result
+      setDialog({visible:true, message: `We have added ${username} to our list! <br/><br/>
+      His/Her _id is: <br/><br/>
+      <b> ${_id} </b>`});
      }
      if(!response.ok){
 
@@ -114,21 +117,22 @@ function AddUser(){
   
   return(
 
-    <Card title="Add User" className="w-17rem h-27rem m-4">
-      <form  className="p-fluid">
+    <Card title="Add User" className="w-10 md:w-5 lg:w-25rem xl:w-17rem h-27rem m-4">
+      <form  className="p-fluid" onSubmit={handleSubmit}>
         <div className="field mb-4">
           <FloatLabel className="mb-4">
-            <InputText id="username" onChange={handleChange} />
+            <InputText id="username" onChange={handleChange} required />
             <label htmlFor="username">Username</label>
           </FloatLabel>
         </div>
-        <Button onClick={handleSubmit} label="Add" type="submit" className="w-full"  />
+        <Button  label="Add" type="submit" className="w-full"  />
       </form>
 
       <Dialog
         header="Submission"
         visible={dialog.visible}
-        style={{ width: "350px" }}
+        style={{ width: '350px', wordBreak:"break-word" }}
+        breakpoints={{ '400px': '300px', '338px':'250px' }} 
         onHide={() => setDialog({...dialog,visible:false})}
         footer={
           <div>
@@ -136,7 +140,8 @@ function AddUser(){
           </div>
         }
       >
-        <p className="m-0">{dialog.message}</p>
+        
+        <div dangerouslySetInnerHTML={{ __html: dialog.message }} />
       </Dialog>
     </Card>
   )
@@ -203,7 +208,7 @@ function AddExercises(){
   return(
 
 
-    <Card title="Add Exercises" className="w-17rem h-27rem m-4">
+    <Card title="Add Exercises" className="w-10 md:w-5 lg:w-25rem xl:w-17rem h-27rem m-4">
       <form className="p-fluid" onSubmit={(e) => handleSubmit(e, id)}>
         <div className="field mb-4">
           <FloatLabel className="mb-5">
@@ -229,7 +234,8 @@ function AddExercises(){
       <Dialog
         header="Submission"
         visible={dialog.visible}
-        style={{ width: "350px" }}
+        style={{ width: '350px', wordBreak:"break-word" }}
+        breakpoints={{ '400px': '300px', '338px':'250px' }} 
         onHide={() => setDialog({...dialog,visible:false})}
         footer={
           <div>
@@ -313,7 +319,7 @@ function ShowDetails(){
 
 
   return(
-    <Card title="Show User Exercises" className="w-17rem h-27rem m-4">
+    <Card title="Show User Exercises" className="w-10 md:w-5 lg:w-25rem xl:w-17rem h-29rem sm:h-27rem m-4">
       <form className="p-fluid" onSubmit={(e) => handleSubmit(e,id,from, to, limit)}>
         <div className="field mb-4">
           <FloatLabel className="mb-5">
@@ -338,7 +344,8 @@ function ShowDetails(){
       <Dialog
         header="Submission"
         visible={dialog.visible}
-        style={{ width: "350px" }}
+        style={{ width: '350px', wordBreak:"break-word" }}
+        breakpoints={{ '400px': '300px', '338px':'250px' }} 
         onHide={() => setDialog({...dialog,visible:false})}
         footer={
           <div>
@@ -399,8 +406,8 @@ function DeleteUser(){
 
   return(
 
-    <Card title="Delete User" className="w-17rem h-27rem m-4">
-      <form className="p-fluid">
+    <Card title="Delete User" className="w-10 md:w-5 lg:w-25rem xl:w-17rem h-29rem sm:h-27rem m-4">
+      <form className="p-fluid" onSubmit={handleSubmit} >
         <div className="field mb-4">
           <FloatLabel className="mb-4">
             <InputText id="_id" onChange={handleIdChange} />
@@ -412,7 +419,8 @@ function DeleteUser(){
       <Dialog
         header="Submission"
         visible={dialog.visible}
-        style={{ width: "350px" }}
+        style={{ width: '350px', wordBreak:"break-word" }}
+        breakpoints={{ '400px': '300px', '338px':'250px' }} 
         onHide={() => setDialog({...dialog,visible:false})}
         footer={
           <div>

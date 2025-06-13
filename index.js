@@ -146,35 +146,35 @@ app.get("/api/users/:_id/logs", async function(req,res){
 
 })
 
-  app.post("/api/users/", async function(req,res){
+app.post("/api/users/", async function(req,res){
 
-    let username = req.body.username
-    username = username.trim()
-    if(!username){
-      res.status(400).json({message:"Can't enter an empty username!"})
-      return
-    }
-    if (username.length >= 40){
-      res.status(400).json({error:"The number of characters of the username can't exceed 40"})
-      return
-    }
-    const selectUsername = `SELECT _id FROM users WHERE username=$1`
-    const selectResult = await pool.query(selectUsername, [`${username}`])
-    const usernameExists = selectResult.rows.length
-    if(usernameExists){
-      const _id = selectResult.rows[0]._id;
-      res.status(400).json({_id, username: username, error:`Username ${username} already exists.`})
-      return
-    } 
+  let username = req.body.username
+  username = username.trim()
+  if(!username){
+    res.status(400).json({error:"Can't enter an empty username!"})
+    return
+  }
+  if (username.length >= 40){
+    res.status(400).json({error:"The number of characters of the username can't exceed 40"})
+    return
+  }
+  const selectUsername = `SELECT _id FROM users WHERE username=$1`
+  const selectResult = await pool.query(selectUsername, [`${username}`])
+  const usernameExists = selectResult.rows.length
+  if(usernameExists){
+    const _id = selectResult.rows[0]._id;
+    res.status(400).json({_id, username: username, error:`Username ${username} already exists.`})
+    return
+  } 
 
-    const _id = uuidv4() 
-    const insertQuery = `INSERT INTO users(_id,username) VALUES($1,$2)`
-    const insertResult  = await pool.query(insertQuery,[`${_id}`,`${username}`] )
-    res.json({_id, username: username, message:`We have added ${username} to our list! His _id is ${_id} `})
+  const _id = uuidv4() 
+  const insertQuery = `INSERT INTO users(_id,username) VALUES($1,$2)`
+  const insertResult  = await pool.query(insertQuery,[`${_id}`,`${username}`] )
+  res.json({_id, username, message:`We have added ${username} to our list! His _id is ${_id} `})
 
-  })
+})
 
-  app.post("/api/users/:_id/exercises", async function (req, res){
+app.post("/api/users/:_id/exercises", async function (req, res){
 
     let _id = req.params._id
     let {description, duration, date} = req.body
