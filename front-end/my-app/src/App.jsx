@@ -371,7 +371,7 @@ function DeleteUser(){
   const [id, setId] = useState("")
   
 
-  const handleIdChange =(e) =>{
+  const handleIdChange = (e) =>{
     setId(e.target.value)
   }
 
@@ -407,10 +407,10 @@ function DeleteUser(){
   return(
 
     <Card title="Delete User" className="w-10 md:w-5 lg:w-25rem xl:w-17rem h-29rem sm:h-27rem m-4">
-      <form className="p-fluid" onSubmit={handleSubmit} >
+      <form className="p-fluid" onSubmit={(e) => handleSubmit(e, id)} >
         <div className="field mb-4">
           <FloatLabel className="mb-4">
-            <InputText id="_id" onChange={handleIdChange} />
+            <InputText id="_id" onChange={handleIdChange} required />
             <label htmlFor="username">_id</label>
           </FloatLabel>
         </div>
@@ -488,7 +488,7 @@ function UserDetailsPage() {
         <Column field="date" header="Date" className="w-4 text-center" />
       </DataTable>
 
-      <Button label="Back to Home" icon="pi pi-home" className="block mt-8 mb-8 mx-auto w-2" onClick={() => navigate('/')} />
+      <Button label="Back to Home Page" icon="pi pi-home" className="block mt-8 mb-8 mx-auto w-2" onClick={() => navigate('/')} />
     </div>
   );
 }
