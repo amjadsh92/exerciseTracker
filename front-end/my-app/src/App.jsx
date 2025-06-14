@@ -473,8 +473,8 @@ function UserDetailsPage() {
 
   return (
     <div>
-      <p className="mt-40px text-center text-3xl">Welcome to {username}'s page</p>
-      <p className="mt-40px text-center text-xl w-7 mx-auto">
+      <p className="mt-40px text-center text-xl sm:text-2xl md:text-3xl">Welcome to {username}'s page</p>
+      <p className="mt-40px text-center text-lg sm:text-xl md:text-2xl w-7 mx-auto">
         {username} has {count} exercises. In the table below the list of his/her exercises.
         {(from || to || limit) &&
           ` ${from || to
@@ -482,13 +482,13 @@ function UserDetailsPage() {
             : ""}${limit ? `The limit of the number of exercises to show is ${limit}.` : ""}`}
       </p>
 
-      <DataTable value={exercisesToShow} className="w-7 mx-auto mt-8">
-        <Column field="description" header="Description" className="word-break w-4 text-center" />
+      <DataTable value={exercisesToShow} className="w-10 mx-auto mt-8 text-xs sm:text-sm md:text-base">
+        <Column field="description" header="Description" className="word-break w-4 text-left md:text-center hyphenate"/>
         <Column field="duration" header="Duration" className="w-4 text-center" />
-        <Column field="date" header="Date" className="w-4 text-center" />
+        <Column field="date" header="Date" className="w-4 text-center no-wrap"/>
       </DataTable>
 
-      <Button label="Back to Home Page" icon="pi pi-home" className="block mt-8 mb-8 mx-auto w-2" onClick={() => navigate('/')} />
+      <Button label="Back to Home Page" icon="pi pi-home" className="block mt-8 mb-8 mx-auto w-40 h-10 text-sm whitespace-nowrap overflow-hidden text-ellipsis" onClick={() => navigate('/')} />
     </div>
   );
 }
