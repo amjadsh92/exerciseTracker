@@ -535,8 +535,8 @@ function UserDetailsPage() {
     <div>
       <p className="mt-40px text-center text-xl sm:text-2xl md:text-3xl">Welcome to {username}'s page</p>
       <p className="mt-40px text-center text-lg sm:text-xl md:text-2xl w-7 mx-auto">
-        {username} has {count} exercises. In the table below the list of his/her exercises.
-        {(from || to || limit) &&
+        {count ? `${username} has ${count} exercises. In the table below the list of his/her exercises.` : "No exercises to show!"}
+        {(count && (from || to || limit)) &&
           ` ${from || to
             ? `We will show their exercises ${from ? `from the date ${from}` : ""}${to ? ` until the date ${to}` : ""}. `
             : ""}${limit ? `The limit of the number of exercises to show is ${limit}.` : ""}`}
