@@ -19,7 +19,6 @@ import { Button } from 'primereact/button';
 import 'primereact/resources/themes/saga-blue/theme.css'; 
 import 'primereact/resources/primereact.min.css';          
 import 'primeicons/primeicons.css'; 
-// import 'primeflex/primeflex.css';   
 import './styles/spaces.css'
 import './styles/_primeflex-custom.scss';
 import './App.scss'
@@ -27,7 +26,33 @@ import './App.scss'
 
 function App() {
 
-  
+  let [users, setUsers] = useState([])
+
+  useEffect(() => {
+
+    const fetchUsers = async () => {
+      
+      try {
+        const res = await fetch(`http://localhost:3000/api/users`);
+        const result = await res.json();
+        if (res.ok) {
+          setUsers(result)
+          
+        }
+      } catch (err) {
+        console.error("Failed to fetch users", err);
+      }
+    };
+
+    fetchUsers();
+  }, [users.length]);
+
+
+  function addUsers(user){
+
+       users = [...users, user]
+       setUsers(users)
+  }
 
   return (
     <Router>
@@ -35,7 +60,7 @@ function App() {
       <div className="home bg-gray-100 w-full">
       <div id="title" className="title mt-40px text-center text-4xl sm:text-5xl md:text-5xl">Exercise Tracker</div>
       <Routes>
-      <Route path="/" element={<Forms />} />
+      <Route path="/" element={<HomePage addUsers = {addUsers} users = {users} setUsers = {setUsers}/>} />
       <Route path="/users/:id/logs" element={<UserDetailsPage  />} />
       </Routes>
       </div>
@@ -45,19 +70,45 @@ function App() {
 }
 
 
+function HomePage({addUsers, setUsers, users}){
 
-function Forms(){
+  return(
+    <>
+    <Forms addUsers={addUsers} setUsers={setUsers} users={users} />
+    <Users users={users} />
+    </>
+  )
 
+
+}
+
+function Users({users}){
+
+  return (
+  
+  <DataTable value={users} className="w-10 mx-auto mt-8 mb-8 text-xs sm:text-sm md:text-base">
+        <Column field="username" header="Username" className="word-break w-4 text-left md:text-center hyphenate"/>
+        <Column field="_id" header="_id" className="w-4 text-center" />
+  </DataTable>
+
+  )
+
+}
+
+
+function Forms({addUsers, setUsers, users}){
+
+  
 
   return (
 
 
   <div className="flex flex-wrap justify-content-center mt-90px w-full mx-auto">
 
-    <AddUser />
+    <AddUser addUsers = {addUsers} />
     <AddExercises />
     <ShowDetails />
-    <DeleteUser />
+    <DeleteUser setUsers ={setUsers} users={users} />
     
     
   </div>
@@ -67,7 +118,7 @@ function Forms(){
 }
 
 
-function AddUser(){
+function AddUser({addUsers}){
 
 
   const [username, setUsername] = useState("");
@@ -82,7 +133,7 @@ function AddUser(){
 
   const  handleSubmit = async (e) => {
     e.preventDefault(); 
-
+     let user = { username: "", _id:""}
      try {
       const response = await fetch("http://localhost:3000/api/users", {
         method: "POST",
@@ -94,10 +145,15 @@ function AddUser(){
       if (response.ok)
      { const result = await response.json();
       const {username, _id} = result
+      user = {_id, username}
+      addUsers(user)
       setDialog({visible:true, message: `We have added ${username} to our list! <br/><br/>
       His/Her _id is: <br/><br/>
       <b> ${_id} </b>`});
+
      }
+
+    
      if(!response.ok){
 
       const result = await response.json();
@@ -107,7 +163,7 @@ function AddUser(){
       
     } catch (error) {
       
-      setDialog({visible:true, message:`Failed to add user. Please Try again.`});
+      setDialog({visible:true, message:`Error has occurred. Please Try again.`});
       
     }
 
@@ -196,7 +252,7 @@ function AddExercises(){
       
     } catch (error) {
       
-      setDialog({visible:true, message: `Failed to add user. Please Try again.`});
+      setDialog({visible:true, message: `Error has occurred. Please Try again.`});
       
     }
 
@@ -293,32 +349,33 @@ function ShowDetails(){
 
     const url = `http://localhost:3000/api/users/${id}/logs?${params.toString()}`;
 
-     try {
-      const response = await fetch(url);
+    try {
+    const response = await fetch(url);
 
-      if (response.ok){
+    if (response.ok){
       const result = await response.json();
-      const {username,count,log} = result
+      const {username,count} = result
       if (username) params.append("username", username); 
       if (count) params.append("count", count);   
     
       navigate(`/users/${id}/logs?${params.toString()}`); 
-      }
-      if(!response.ok){
-        const result = await response.json();
-        setDialog({visible:true, message:result.error})
-      }
-      
-    } catch (error) {
-      
-      setDialog({visible:true, message: `Failed to add user. Please Try again.`});
-      
     }
+    if(!response.ok){
+      const result = await response.json();
+      setDialog({visible:true, message:result.error})
+    }
+    
+  } catch (error) {
+    
+    setDialog({visible:true, message: `Error has occurred. Please Try again.`});
+    
+  }
 
   }
 
 
   return(
+
     <Card title="Show User Exercises" className="w-10 md:w-5 lg:w-25rem xl:w-17rem h-29rem sm:h-27rem m-4">
       <form className="p-fluid" onSubmit={(e) => handleSubmit(e,id,from, to, limit)}>
         <div className="field mb-4">
@@ -364,7 +421,7 @@ function ShowDetails(){
 }
 
 
-function DeleteUser(){
+function DeleteUser({setUsers, users}){
 
 
   const [dialog, setDialog] = useState({visible:false, message:""});
@@ -389,7 +446,10 @@ function DeleteUser(){
 
       if (response.ok){
             const result = await response.json();
+            const filteredUSers = users.filter((user) => user._id !== id)
+            setUsers(filteredUSers)
             setDialog({visible:true, message: result.message});
+            
       }
       if(!response.ok){
         const result = await response.json();
@@ -398,7 +458,7 @@ function DeleteUser(){
       
     } catch (error) {
       
-      setDialog({visible:true, message: `Server error. Please Try again.`});
+      setDialog({visible:true, message: `Error has occurred. Please Try again.`});
       
     }
 
