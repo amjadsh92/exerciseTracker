@@ -130,3 +130,7 @@
   hyphens: auto;
 }
 
+tr[data-pc-section = "emptymessage"] > td {
+  display: none;
+}
+
