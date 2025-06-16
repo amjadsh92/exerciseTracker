@@ -88,7 +88,7 @@ function Users({ users }) {
       <Column
         field="username"
         header="Username"
-        className="word-break w-4 text-left md:text-center hyphenate"
+        className="word-break w-4 text-center hyphenate"
       />
       <Column field="_id" header="_id" className="w-4 text-center" />
     </DataTable>
@@ -552,7 +552,7 @@ function UserDetailsPage() {
         <Column
           field="description"
           header="Description"
-          className="word-break w-4 text-left md:text-center hyphenate"
+          className="word-break w-4 text-center hyphenate"
         />
         <Column
           field="duration"
