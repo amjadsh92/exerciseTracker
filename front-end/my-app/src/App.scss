@@ -139,6 +139,14 @@ tr[data-pc-section = "emptymessage"] > td::before  {
     font-size:12px;
           
   }
+
+  .p-datatable .p-column-header-content {
+    display:block;
+  } 
+  .p-datatable .p-datatable-thead > tr > th {
+    
+    text-align:center !important;
+  }
   
 
 }
