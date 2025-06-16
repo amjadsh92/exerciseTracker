@@ -1,16 +1,3 @@
-/* *{
-  margin:0;
-  padding:0;
-  box-sizing: border-box;
-} */
-
-/* 
-.p-column-header-content{
-  display:block !important
-} */
-
-
-
 .word-break{
   word-break: break-word;
 }
@@ -130,7 +117,30 @@
   hyphens: auto;
 }
 
-tr[data-pc-section = "emptymessage"] > td {
-  display: none;
+tr[data-pc-section = "emptymessage"] > td  {
+  font-size: 0;
+  position: relative;
 }
+
+tr[data-pc-section = "emptymessage"] > td::before  {
+  
+  content: "No records available";    
+  font-size:15px;
+        
+}
+
+@media (max-width: 400px) {
+
+  
+  
+  tr[data-pc-section = "emptymessage"] > td::before  {
+    
+    content: "No records available";    
+    font-size:12px;
+          
+  }
+  
+
+}
+
 
