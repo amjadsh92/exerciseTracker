@@ -29,7 +29,7 @@ const connectToDatabase = async () => {
 };
 
 const listenToServer = () => {
-  const listener = app.listen(process.env.SERVER_PORT || 3000, () => {
+  const listener = app.listen(process.env.SERVER_PORT || 3001, () => {
     console.log("Your app is listening on port " + listener.address().port);
   });
 };
