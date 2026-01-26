@@ -27,7 +27,7 @@ A powerful, open-source object-relational database system used for data storage.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/amjadsh92/exercise_tracker.git
+   git clone https://github.com/amjadsh92/exerciseTracker.git
 2.  Navigate to both the backend and frontend directories and install dependencies:
     ```
     npm install
