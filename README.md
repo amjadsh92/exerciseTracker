@@ -29,9 +29,20 @@ PostgreSQL is a powerful, open source object-relational database system.
 2.  cd to both the Backend and Frontend directories and install all dependencies using
     ```
     npm install
+
     ```
 
-3. You can check it in production at https://portfolio.amjadsh.com.     
+3. Use Postegres and create a database with a name you choose for example "exercise_tracker"
+
+4. use this psql command
+
+```
+psql database_name < schema.sql
+
+```
+ to regenerate the schema
+
+     
 
     
     
