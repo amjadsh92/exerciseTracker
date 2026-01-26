@@ -35,14 +35,14 @@ const listenToServer = () => {
 };
 
 const handleAPIs = () => {
-  app.get("/api/users/", async function (req, res) {
+  app.get(`${process.env.BASE_URL}/api/users/`, async function (req, res) {
     const selectAllUsers = `SELECT * FROM users`;
     const allUsersResult = await pool.query(selectAllUsers);
     const arrayOfAllUsers = allUsersResult.rows;
     res.json(arrayOfAllUsers);
   });
 
-  app.get("/api/users/:_id/logs", async function (req, res) {
+  app.get(`${process.env.BASE_URL}/api/users/:_id/logs`, async function (req, res) {
     const _id = req.params._id;
 
     const selectUserQuery = "SELECT username FROM users WHERE _id=$1";
@@ -134,7 +134,7 @@ const handleAPIs = () => {
     res.json({ _id, count, username, log: exercises });
   });
 
-  app.post("/api/users/", async function (req, res) {
+  app.post(`${process.env.BASE_URL}/api/users/`, async function (req, res) {
     let username = req.body.username;
     username = username.trim();
     if (!username) {
@@ -177,7 +177,7 @@ const handleAPIs = () => {
     });
   });
 
-  app.post("/api/users/:_id/exercises", async function (req, res) {
+  app.post(`${process.env.BASE_URL}/api/users/:_id/exercises`, async function (req, res) {
     let _id = req.params._id;
     let { description, duration, date } = req.body;
 
@@ -254,7 +254,7 @@ const handleAPIs = () => {
     }
   });
 
-  app.delete("/api/users/:_id", async function (req, res) {
+  app.delete(`${process.env.BASE_URL}/api/users/:_id`, async function (req, res) {
     let _id = req.params._id;
 
     if (!_id) {

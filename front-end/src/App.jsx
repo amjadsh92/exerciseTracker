@@ -23,13 +23,17 @@ import "./styles/spaces.css";
 import "./styles/_primeflex-custom.scss";
 import "./App.scss";
 
+const baseURL = import.meta.env.VITE_BASE_URL;
+
 function App() {
   let [users, setUsers] = useState([]);
+
+  
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/users`);
+        const res = await fetch(`${baseURL}/api/users`);
         const result = await res.json();
         if (res.ok) {
           setUsers(result);
@@ -48,7 +52,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename="/exercise-tracker">
       <div className="home bg-gray-100 w-full">
         <div
           id="title"
@@ -121,7 +125,7 @@ function AddUser({ addUsers }) {
     e.preventDefault();
     let user = { username: "", _id: "" };
     try {
-      const response = await fetch("http://localhost:3000/api/users", {
+      const response = await fetch(`${baseURL}/api/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -213,7 +217,7 @@ function AddExercises() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/users/${id}/exercises`,
+        `${baseURL}/api/users/${id}/exercises`,
         {
           method: "POST",
           headers: {
@@ -340,7 +344,7 @@ function ShowDetails() {
     if (to) params.append("to", to);
     if (limit) params.append("limit", limit);
 
-    const url = `http://localhost:3000/api/users/${id}/logs?${params.toString()}`;
+    const url = `${baseURL}/api/users/${id}/logs?${params.toString()}`;
 
     try {
       const response = await fetch(url);
@@ -429,7 +433,7 @@ function DeleteUser({ setUsers, users }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+      const response = await fetch(`${baseURL}/api/users/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -511,7 +515,7 @@ function UserDetailsPage() {
       if (limit) query.append("limit", limit);
       try {
         const res = await fetch(
-          `http://localhost:3000/api/users/${id}/logs?${query.toString()}`
+          `${baseURL}/api/users/${id}/logs?${query.toString()}`
         );
         const result = await res.json();
         if (res.ok) {
