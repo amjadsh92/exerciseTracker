@@ -1,46 +1,68 @@
 # Exercise Tracker
 
-# Description
-A full-stack web app that can add and delete users, and track their exercises. I developed it through my learning journey to learn and enhance my skills in back-end web development. 
+## Description
 
+Exercise Tracker is a full-stack web application that allows users to be created and deleted, as well as to track their exercises.  
+This project was developed as part of my learning journey to strengthen and enhance my back-end web development skills.
 
-# Tech used
+## Tech Stack
 
-## Front end
+### Front End
 
-### React
-A UI library that is used to build the front end part of the app.
-### PrimeReact
-It is a React UI component library that helped in creating forms, tables, and Modals.
+#### React
+A UI library used to build the front-end of the application.
 
+#### PrimeReact
+A React UI component library used to create forms, tables, and modals.
 
-## Back end
+### Back End
 
-### Express
-This framework was used to build the back-end part of the project.
-### PostgreSQL
-PostgreSQL is a powerful, open source object-relational database system.
-# Installation
+#### Express
+A Node.js framework used to build the back-end of the application.
+
+#### PostgreSQL
+A powerful, open-source object-relational database system used for data storage.
+
+## Installation
 
 1. Clone the repository:
-      ```
-      git clone https://github.com/amjadsh92/url_shortener_project.git
-     ```
-2.  cd to both the Backend and Frontend directories and install all dependencies using
+   ```bash
+   git clone https://github.com/amjadsh92/exercise_tracker.git
+2.  Navigate to both the backend and frontend directories and install dependencies:
     ```
     npm install
 
     ```
 
-3. Use Postegres and create a database with a name you choose for example "exercise_tracker"
+3. Create a PostgreSQL database with a name of your choice (for example: exercise_tracker).
 
-4. use this psql command
+4. Regenerate the database schema using:
 
-```
-psql database_name < schema.sql
+    ```
+    psql database_name < schema.sql
 
-```
- to regenerate the schema
+    ```
+ 
+
+5.  Start the frontend server:
+    ```
+    cd front-end
+    npm run dev
+    ```
+
+    to run the frontend server
+
+6.  Start the back-end server:
+    ```
+    cd back-end
+    node index.js
+    ```
+
+        
+
+
+
+
 
      
 
