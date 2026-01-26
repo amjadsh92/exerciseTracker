@@ -19,7 +19,7 @@ It is a React UI component library that helped in creating forms, tables, and Mo
 ### Express
 This framework was used to build the back-end part of the project.
 ### PostgreSQL
-PostgreSQL is a powerful, open source object-relational database system
+PostgreSQL is a powerful, open source object-relational database system.
 # Installation
 
 1. Clone the repository:
