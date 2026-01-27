@@ -36,7 +36,7 @@ A powerful, open-source object-relational database system used for data storage.
 
 3. Create a PostgreSQL database with a name of your choice (for example: exercise_tracker).
 
-4. Regenerate the database schema using:
+4.  Navigate to the  back-end directory and regenerate the database schema using:
 
     ```
     psql database_name < schema.sql
